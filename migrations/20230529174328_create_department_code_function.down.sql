@@ -1,0 +1,1 @@
+DROP FUNCTIOn IF EXISTS add_department_code;

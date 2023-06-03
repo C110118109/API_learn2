@@ -11,6 +11,7 @@ type Service interface {
 	Created(input *model.Created) (output *model.Base, err error)
 	List(input *model.Fields) (quantity int64, output []*model.Base, err error)
 	GetByID(input *model.Field) (output *model.Base, err error)
+	GetBySingle(input *model.Base) (output *model.Base, err error)
 	Deleted(input *model.Updated) (err error)
 	Updated(input *model.Updated) (err error)
 }

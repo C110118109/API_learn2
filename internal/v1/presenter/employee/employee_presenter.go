@@ -2,7 +2,7 @@ package employee
 
 import (
 	"net/http"
-	"eirc.app/internal/pkg/util"
+	//"eirc.app/internal/pkg/util"
 	"eirc.app/internal/pkg/code"
 	"eirc.app/internal/pkg/log"
 	preset "eirc.app/internal/v1/presenter"
@@ -14,9 +14,9 @@ import (
 func (p *presenter) Created(ctx *gin.Context) {
 	// Todo 將UUID改成登入的使用者
 	trx := ctx.MustGet("db_trx").(*gorm.DB)
-	createBy := util.GenerateUUID()
+	//createBy := util.GenerateUUID()
 	input := &employees.Created{}
-	input.CreatedBy = createBy
+	//input.CreatedBy = createBy
 	if err := ctx.ShouldBindJSON(input); err != nil {
 		log.Error(err)
 		ctx.JSON(http.StatusOK, code.GetCodeMessage(code.FormatError, err.Error()))
@@ -24,7 +24,7 @@ func (p *presenter) Created(ctx *gin.Context) {
 		return
 	}
 
-	codeMessage := p.Employeeesolver.Created(trx, input)
+	codeMessage := p.Employeeresolver.Created(trx, input)
 	ctx.JSON(http.StatusOK, codeMessage)
 }
 
@@ -41,7 +41,7 @@ func (p *presenter) List(ctx *gin.Context) {
 		input.Limit = preset.DefaultLimit
 	}
 
-	codeMessage := p.Employeeesolver.List(input)
+	codeMessage := p.Employeeresolver.List(input)
 	ctx.JSON(http.StatusOK, codeMessage)
 }
 
@@ -56,7 +56,22 @@ func (p *presenter) GetByID(ctx *gin.Context) {
 		return
 	}
 
-	codeMessage := p.Employeeesolver.GetByID(input)
+	codeMessage := p.Employeeresolver.GetByID(input)
+	ctx.JSON(http.StatusOK, codeMessage)
+}
+
+func (p *presenter) GetBySingle(ctx *gin.Context) {
+	employeeID := ctx.Param("employeeID")
+	input := &employees.Base{}
+	input.EmployeeID = employeeID
+	if err := ctx.ShouldBindQuery(input); err != nil {
+		log.Error(err)
+		ctx.JSON(http.StatusOK, code.GetCodeMessage(code.FormatError, err.Error()))
+
+		return
+	}
+
+	codeMessage := p.Employeeresolver.GetBySingle(input)
 	ctx.JSON(http.StatusOK, codeMessage)
 }
 
@@ -74,7 +89,7 @@ func (p *presenter) Delete(ctx *gin.Context) {
 		return
 	}
 
-	codeMessage := p.Employeeesolver.Deleted(input)
+	codeMessage := p.Employeeresolver.Deleted(input)
 	ctx.JSON(http.StatusOK, codeMessage)
 }
 
@@ -92,6 +107,6 @@ func (p *presenter) Updated(ctx *gin.Context) {
 		return
 	}
 
-	codeMessage := p.Employeeesolver.Updated(input)
+	codeMessage := p.Employeeresolver.Updated(input)
 	ctx.JSON(http.StatusOK, codeMessage)
 }

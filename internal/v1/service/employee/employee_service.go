@@ -76,6 +76,31 @@ func (s *service) List(input *model.Fields) (quantity int64, output []*model.Bas
 	return amount, output, err
 }
 
+func (s *service) GetBySingle(input *model.Base) (output *model.Base, err error) {
+	field, err := s.Entity.GetBySingle(input)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	marshal, err := json.Marshal(field)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	err = json.Unmarshal(marshal, &output)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	return output, nil
+}
+
 func (s *service) GetByID(input *model.Field) (output *model.Base, err error) {
 	field, err := s.Entity.GetByID(input)
 	if err != nil {

@@ -10,6 +10,7 @@ type Entity interface {
 	Created(input *model.Table) (err error)
 	List(input *model.Fields) (amount int64, output []*model.Table, err error)
 	GetByID(input *model.Field) (output *model.Table, err error)
+	GetBySingle(input *model.Base) (output *model.Table, err error)
 	//brfore : Deleted(input *model.Field) (err error)
 	Deleted(input *model.Table) (err error)
 	Updated(input *model.Table) (err error)

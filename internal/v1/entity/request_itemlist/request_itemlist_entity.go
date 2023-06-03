@@ -12,17 +12,12 @@ func (e *entity) Created(input *model.Table) (err error) {
 
 func (e *entity) List(input *model.Fields) (amount int64, output []*model.Table, err error) {
 	db := e.db.Model(&model.Table{})
-	if input.RequestID != nil {
-		db.Where("request_id = ?", input.RequestID)
+
+	if input.Name != "" {
+		db.Where("name like %?%", input.Name)
 	}
-
-	// if input.Price != nil {
-	// 	db.Where("price = ?", input.Price)
-	// }
-
-	// if input.Quanity != nil {
-	// 	db.Where("name like %?%", *input.Quanity)
-	// }
+	err = db.Count(&amount).Offset(int((input.Page - 1) * input.Limit)).
+		Limit(int(input.Limit)).Order("created_time desc").Find(&output).Error
 
 	return amount, output, err
 }

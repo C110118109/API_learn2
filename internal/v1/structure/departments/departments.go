@@ -10,13 +10,11 @@ import (
 // Table struct is database table struct
 type Table struct {
 	// 部門編號
-	DepartmentID string `gorm:"primaryKey;uuid_generate_v4();column:department_id;type:uuid;" json:"department_id,omitempty"`
+	DepartmentID string `gorm:"primaryKey;uuid_generate_v4();column:d_id;type:uuid;" json:"d_id,omitempty"`
 	// 部門代號
-	DepartmentCode string `gorm:"->;column:department_code;add_department_code()type:text;" json:"department_code,omitempty"` //->唯讀不寫 else:會是空白
+	DepartmentCode string `gorm:"->;column:d_code;add_department_code()type:text;" json:"d_code,omitempty"` //->唯讀不寫 else:會是空白
 	// 部門名稱
 	Name string `gorm:"column:name;type:TEXT;" json:"name,omitempty"`
-	// 創建者
-	CreatedBy string `gorm:"column:created_by;type:UUID;" json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `gorm:"column:created_time;type:TIMESTAMP;" json:"created_time"`
 }
@@ -24,13 +22,11 @@ type Table struct {
 // Base struct is corresponding to table structure file
 type Base struct {
 	// 部門編號
-	DepartmentID string `json:"department_id,omitempty"`
+	DepartmentID string `json:"d_id,omitempty"`
 	// 部門代號
-	DepartmentCode string `json:"department_code,omitempty"`
+	DepartmentCode string `json:"d_code,omitempty"`
 	// 部門名稱
 	Name string `json:"name,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -38,13 +34,11 @@ type Base struct {
 // Single return structure file
 type Single struct {
 	// 部門編號
-	DepartmentID string `json:"department_id,omitempty"`
+	DepartmentID string `json:"d_id,omitempty"`
 	// 部門代號
-	DepartmentCode string `json:"department_code,omitempty"`
+	DepartmentCode string `json:"d_code,omitempty"`
 	// 部門名稱
 	Name string `json:"name,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -60,9 +54,9 @@ type Created struct {
 // Updated struct is used to update
 type Updated struct {
 	// 部門編號
-	DepartmentID string `json:"department_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
+	DepartmentID string `json:"d_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 部門代號
-	DepartmentCode string `json:"department_code,omitempty"`
+	DepartmentCode string `json:"d_code,omitempty"`
 	// 部門名稱
 	Name string `json:"name,omitempty"`
 }
@@ -70,9 +64,9 @@ type Updated struct {
 // Field is structure file for search
 type Field struct {
 	// 部門編號
-	DepartmentID string `json:"department_id,omitempty"  binding:"omitempty,uuid4" swaggerignore:"true"`
+	DepartmentID string `json:"d_id,omitempty"  binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 部門代號
-	DepartmentCode *string `json:"department_code,omitempty" form:"name"`
+	DepartmentCode *string `json:"d_code,omitempty" form:"name"`
 	// 部門名稱
 	Name *string `json:"name,omitempty" form:"name"`
 }
@@ -87,13 +81,11 @@ type Fields struct {
 type List struct {
 	Departments []*struct {
 		// 部門編號
-		DepartmentID string `json:"department_id,omitempty"`
+		DepartmentID string `json:"d_id,omitempty"`
 		// 部門代號
-		DepartmentCode string `json:"department_code,omitempty"`
+		DepartmentCode string `json:"d_code,omitempty"`
 		// 部門名稱
 		Name string `json:"name,omitempty"`
-		// 創建者
-		CreatedBy string `json:"created_by,omitempty"`
 		// 創建時間
 		CreatedTime time.Time `json:"created_time"`
 	} `json:"departments"`

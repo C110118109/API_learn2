@@ -7,34 +7,17 @@ import (
 	"eirc.app/internal/pkg/code"
 	"eirc.app/internal/pkg/log"
 	"eirc.app/internal/pkg/util"
-	employeeModel "eirc.app/internal/v1/structure/employees"
+
+	//employeeModel "eirc.app/internal/v1/structure/employees"
+	//"eirc.app/internal/v1/entity/employee"
 	requestModel "eirc.app/internal/v1/structure/requests"
-	requesitemlistModel "eirc.app/internal/v1/structure/request_itemlists"
+	//requesitemlistModel "eirc.app/internal/v1/structure/request_itemlists"
 	"gorm.io/gorm"
 )
 
 func (r *resolver) Created(trx *gorm.DB, input *requestModel.Created) interface{} {
 	defer trx.Rollback()
 	// Todo 角色名稱
-	_, err := r.RequestItemListService.WithTrx(trx).GetByID(&requesitemlistModel.Field{RequestItemListID: input.RequestItemListID})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.GetCodeMessage(code.DoesNotExist, err)
-		}
-
-		log.Error(err)
-		return code.GetCodeMessage(code.InternalServerError, err.Error())
-	}
-	//todo err重複宣告   (Before  := )
-	_, err = r.EmployeeService.WithTrx(trx).GetByID(&employeeModel.Field{EmployeeID: input.EmployeeID})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.GetCodeMessage(code.DoesNotExist, err)
-		}
-
-		log.Error(err)
-		return code.GetCodeMessage(code.InternalServerError, err.Error())
-	}
 
 	request, err := r.RequestService.WithTrx(trx).Created(input)
 	if err != nil {
@@ -66,6 +49,39 @@ func (r *resolver) List(input *requestModel.Fields) interface{} {
 	}
 
 	return code.GetCodeMessage(code.Successful, output)
+}
+
+func (r *resolver) GetBySingle(input *requestModel.Base) interface{} {
+	request, err := r.RequestService.GetBySingle(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requestModel.Single{}
+	requestByte, _ := json.Marshal(request)
+	err = json.Unmarshal(requestByte, &output)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output.ApplicantName = request.Employees.Name
+
+	// if applicantBase,err:= r.RequestService.GetBySingle(&requestModel.Field{
+	// 	RequestID: *&requestBase.ApplicantID,
+	// });err != nil{
+	// 	output.ApplicantName=""
+	// }else{
+	// 	output.ApplicantName=*applicantBase.Name
+	// }
+
+	return code.GetCodeMessage(code.Successful, output)
+
 }
 
 func (r *resolver) GetByID(input *requestModel.Field) interface{} {

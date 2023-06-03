@@ -4,14 +4,17 @@ import (
 	"time"
 
 	model "eirc.app/internal/v1/structure"
+	"eirc.app/internal/v1/structure/employees"
 )
 
 // Table struct is database table struct
 type Table struct {
 	// 編號UUID
-	RequestID string `gorm:"primaryKey;column:request_id;uuid_generate_v4()type:UUID;" json:"request_id,omitempty"`
-	// 員工ID//申請人
-	EmployeeID string `gorm:"column:employee_id;type:UUID;" json:"employee_id,omitempty"`
+	RequestID string `gorm:"primaryKey;column:re_id;uuid_generate_v4()type:UUID;" json:"re_id,omitempty"`
+	//申請人
+	ApplicantID string `gorm:"column:applicant;type:UUID;" json:"applicant,omitempty"`
+	//applicant data
+	Employees employees.Table `gorm:"foreignKey:ApplicantID;references:ApplicantID" json:"employees,omitempty"`
 	// 請購產品列表ID
 	RequestItemListID string `gorm:"column:request_itemlist_id;type:UUID;" json:"request_itemlist_id,omitempty"`
 	// 請購是由
@@ -27,9 +30,11 @@ type Table struct {
 // Base struct is corresponding to table structure file
 type Base struct {
 	// 編號
-	RequestID string `json:"request_id,omitempty"`
-	// 員工ID
-	EmployeeID string `json:"employee_id,omitempty"`
+	RequestID string `json:"re_id,omitempty"`
+	// 申請人
+	ApplicantID string `json:"applicant,omitempty"`
+	//applicant data
+	Employees employees.Base `json:"employees,omitempty"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id,omitempty"`
 	// 請購是由
@@ -45,9 +50,11 @@ type Base struct {
 // Single return structure file
 type Single struct {
 	// 編號
-	RequestID string `json:"request_id,omitempty"`
-	// 員工ID
-	EmployeeID string `json:"employee_id,omitempty"`
+	RequestID string `json:"re_id,omitempty"`
+	// 申請人
+	ApplicantID string `json:"applicant,omitempty"`
+	// 申請人姓名
+	ApplicantName string `json:"applicant_name,omitempty"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id,omitempty"`
 	// 請購是由
@@ -62,8 +69,8 @@ type Single struct {
 
 // Created struct is used to create
 type Created struct {
-	// 員工ID
-	EmployeeID string `json:"employee_id" binding:"required" validate:"required"`
+	// 申請人
+	ApplicantID string `json:"applicant" binding:"required" validate:"required"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id" binding:"required,uuid4" validate:"required"`
 	// 請購是由
@@ -77,15 +84,15 @@ type Created struct {
 // Field is structure file for search
 type Field struct {
 	// 編號
-	RequestID string `json:"request_id,omitempty" binding:"omitempty" swaggerignore:"true"`
-	// 員工ID
-	EmployeeID *string `json:"employee_id,omitempty" form:"employee_id" binding:"omitempty,uuid4"`
+	RequestID string `json:"re_id,omitempty" binding:"omitempty" swaggerignore:"true"`
+	// 申請人
+	ApplicantID string `json:"applicant,omitempty" form:"applicant" binding:"omitempty,uuid4"`
 	// 請購產品列表ID
-	RequestItemListID *string `json:"request_itemlist_id,omitempty" form:"request_itemlist_id" binding:"omitempty,uuid4"`
+	RequestItemListID string `json:"request_itemlist_id,omitempty" form:"request_itemlist_id" binding:"omitempty,uuid4"`
 	// 請購是由
-	Reason *string `json:"reason,omitempty" form:"reason"`
+	Reason string `json:"reason,omitempty" form:"reason"`
 	// 請購日期
-	RequestDate *time.Time `json:"request_date,omitempty" form:"request_date"`
+	RequestDate time.Time `json:"request_date,omitempty" form:"request_date"`
 }
 
 // Fields is the searched structure file (including pagination)
@@ -98,9 +105,9 @@ type Fields struct {
 type List struct {
 	Requests []*struct {
 		// 編號
-		RequestID string `json:"request_id,omitempty"`
-		// 員工ID
-		EmployeeID string `json:"employee_id,omitempty"`
+		RequestID string `json:"re_id,omitempty"`
+		// 申請人
+		ApplicantID string `json:"applicant,omitempty"`
 		// 請購產品列表ID
 		RequestItemListID string `json:"request_itemlist_id,omitempty"`
 		// 請購是由
@@ -118,15 +125,15 @@ type List struct {
 // Updated struct is used to update
 type Updated struct {
 	// 編號
-	RequestID string `json:"request_id,omitempty" binding:"omitempty" swaggerignore:"true"`
-	// 員工ID
-	EmployeeID *string `json:"employee_id,omitempty" binding:"omitempty,uuid4"`
+	RequestID string `json:"re_id,omitempty" binding:"omitempty" swaggerignore:"true"`
+	// 申請人
+	ApplicantID string `json:"applicant,omitempty" binding:"omitempty,uuid4"`
 	// 請購產品列表ID
-	RequestItemListID *string `json:"request_itemlist_id,omitempty" binding:"omitempty,uuid4"`
+	RequestItemListID string `json:"request_itemlist_id,omitempty" binding:"omitempty,uuid4"`
 	// 請購是由
-	Reason *string `json:"reason,omitempty"`
+	Reason string `json:"reason,omitempty"`
 	// 請購日期
-	RequestDate *time.Time `json:"request_date,omitempty"`
+	RequestDate time.Time `json:"request_date,omitempty"`
 }
 
 // TableName sets the insert table name for this struct type

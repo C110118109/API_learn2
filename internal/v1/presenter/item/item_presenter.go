@@ -4,7 +4,7 @@ import (
 	"eirc.app/internal/pkg/code"
 	"eirc.app/internal/pkg/log"
 
-	"eirc.app/internal/pkg/util"
+	//"eirc.app/internal/pkg/util"
 	"net/http"
 
 	preset "eirc.app/internal/v1/presenter"
@@ -16,9 +16,9 @@ import (
 func (p *presenter) Created(ctx *gin.Context) {
 
 	trx := ctx.MustGet("db_trx").(*gorm.DB)
-	createBy := util.GenerateUUID()
+	//createBy := util.GenerateUUID()
 	input := &items.Created{}
-	input.CreatedBy = createBy
+	//input.CreatedBy = createBy
 	if err := ctx.ShouldBindJSON(input); err != nil {
 		log.Error(err)
 		ctx.JSON(http.StatusOK, code.GetCodeMessage(code.FormatError, err.Error()))

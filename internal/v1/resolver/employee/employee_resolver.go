@@ -7,33 +7,17 @@ import (
 	"eirc.app/internal/pkg/code"
 	"eirc.app/internal/pkg/log"
 	"eirc.app/internal/pkg/util"
-	departmentModel "eirc.app/internal/v1/structure/departments"
+
+	//departmentModel "eirc.app/internal/v1/structure/departments"
+
 	employeeModel "eirc.app/internal/v1/structure/employees"
-	roleModel "eirc.app/internal/v1/structure/roles"
+	//roleModel "eirc.app/internal/v1/structure/roles"
 	"gorm.io/gorm"
 )
 
 func (r *resolver) Created(trx *gorm.DB, input *employeeModel.Created) interface{} {
 	defer trx.Rollback()
 	// Todo 角色名稱
-	_, err := r.DeparmentService.WithTrx(trx).GetByID(&departmentModel.Field{DepartmentID: input.DepartmentID})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.GetCodeMessage(code.DoesNotExist, err)
-		}
-
-		log.Error(err)
-		return code.GetCodeMessage(code.InternalServerError, err.Error())
-	}
-	_, err = r.RoleService.WithTrx(trx).GetByID(&roleModel.Field{RoleID: input.RoleID})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.GetCodeMessage(code.DoesNotExist, err)
-		}
-
-		log.Error(err)
-		return code.GetCodeMessage(code.InternalServerError, err.Error())
-	}
 
 	employee, err := r.EmployeeService.WithTrx(trx).Created(input)
 	if err != nil {
@@ -65,6 +49,32 @@ func (r *resolver) List(input *employeeModel.Fields) interface{} {
 	}
 
 	return code.GetCodeMessage(code.Successful, output)
+}
+
+func (r *resolver) GetBySingle(input *employeeModel.Base) interface{} {
+	employee, err := r.EmployeeService.GetBySingle(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &employeeModel.Single{}
+	employeeByte, _ := json.Marshal(employee)
+	err = json.Unmarshal(employeeByte, &output)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output.DepartmentName = employee.Departments.Name
+	output.DepartmentCode = employee.Departments.DepartmentCode
+	output.RoleName = employee.Roles.Name
+	return code.GetCodeMessage(code.Successful, output)
+
 }
 
 func (r *resolver) GetByID(input *employeeModel.Field) interface{} {

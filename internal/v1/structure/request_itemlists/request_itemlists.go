@@ -10,15 +10,21 @@ import (
 // Table struct is database table struct
 type Table struct {
 	// 請購產品列表編號
-	RequestItemListID string `gorm:"primaryKey;uuid_generate_v4();column:request_itemlist_id;type:uuid;" json:"request_itemlist_id,omitempty"`
+	RequestItemListID string `gorm:"primaryKey;uuid_generate_v4();column:ri_id;type:uuid;" json:"ri_id,omitempty"`
+	// 請購單編號
+	RequestID string `gorm:"column:request_id;type:uuid;" json:"request_id,omitempty"`
 	// 品名
 	Name string `gorm:"column:name;type:TEXT;" json:"name,omitempty"`
 	// 用途
 	Application string `gorm:"column:application;type:TEXT;" json:"application,omitempty"`
-	// 請購單編號
-	RequestID string `gorm:"column:request_id;type:uuid;" json:"request_id,omitempty"`
 	// 請購數量
 	Quanity int64 `gorm:"column:quanity;type:INT4;" json:"quanity,omitempty"`
+	// 產品單位(規格)
+	Unit string `gorm:"column:unit;type:TEXT;" json:"unit,omitempty"`
+	// 單價
+	Price int64 `gorm:"column:price;type:INT4;" json:"price,omitempty"`
+	// 總價
+	Total int64 `gorm:"column:total;type:INT4;" json:"total,omitempty"`
 	// 創建者
 	CreatedBy string `gorm:"column:created_by;type:UUID;" json:"created_by,omitempty"`
 	// 創建時間
@@ -28,7 +34,7 @@ type Table struct {
 // Base struct is corresponding to table structure file
 type Base struct {
 	// 請購產品列表編號
-	RequestItemListID string `json:"request_itemlist_id,omitempty"`
+	RequestItemListID string `json:"ri_id,omitempty"`
 	// 品名
 	Name string `json:"name,omitempty"`
 	// 請購單編號
@@ -37,6 +43,12 @@ type Base struct {
 	Application string `json:"application,omitempty"`
 	// 請購數量
 	Quanity int64 `json:"quanity,omitempty"`
+	// 產品單位(規格)
+	Unit string `json:"unit,omitempty"`
+	// 單價
+	Price int64 `json:"price,omitempty"`
+	// 總價
+	Total int64 `json:"total,omitempty"`
 	// 創建者
 	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
@@ -46,15 +58,21 @@ type Base struct {
 // Single return structure file
 type Single struct {
 	// 請購產品列表編號
-	RequestItemListID string `json:"request_itemlist_id,omitempty"`
-	// 品名
-	Name string `json:"name,omitempty"`
+	RequestItemListID string `json:"ri_id,omitempty"`
 	// 請購單編號
 	RequestID string `json:"request_id,omitempty"`
+	// 品名
+	Name string `json:"name,omitempty"`
 	// 用途
 	Application string `json:"application,omitempty"`
 	// 請購數量
 	Quanity int64 `json:"quanity,omitempty"`
+	// 產品單位(規格)
+	Unit string `json:"unit,omitempty"`
+	// 單價
+	Price int64 `json:"price,omitempty"`
+	// 總價
+	Total int64 `json:"total,omitempty"`
 	// 創建者
 	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
@@ -71,6 +89,12 @@ type Created struct {
 	Application string `json:"application,omitempty" binding:"required" validate:"required"`
 	// 請購數量
 	Quanity int64 `json:"quanity,omitempty" binding:"required" validate:"required"`
+	// 產品單位(規格)
+	Unit string `json:"unit,omitempty" binding:"required" validate:"required"`
+	// 單價
+	Price int64 `json:"price,omitempty" binding:"required" validate:"required"`
+	// 總價
+	Total int64 `json:"total,omitempty" binding:"required" validate:"required"`
 	// 創建者
 	CreatedBy string `json:"created_by,omitempty" swaggerignore:"true"`
 }
@@ -78,15 +102,21 @@ type Created struct {
 // Field is structure file for search
 type Field struct {
 	// 請購產品列表編號
-	RequestItemListID string `json:"request_itemlist_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
+	RequestItemListID string `json:"ri_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 請購單編號
-	RequestID *string `json:"request_id,omitempty" form:"request_id" binding:"omitempty,uuid4"`
+	RequestID string `json:"request_id,omitempty" form:"request_id" binding:"omitempty,uuid4"`
 	// 用途
-	Application *string `json:"application,omitempty" form:"application"`
+	Application string `json:"application,omitempty" form:"application"`
 	// 品名
-	Name *string `json:"name,omitempty" form:"name"`
+	Name string `json:"name,omitempty" form:"name"`
 	// 請購數量
-	Quanity *int64 `json:"quanity,omitempty" form:"quanity"`
+	Quanity int64 `json:"quanity,omitempty" form:"quanity"`
+	// 產品單位(規格)
+	Unit *string `json:"unit,omitempty" form:"unit"`
+	// 單價
+	Price *int64 `json:"price,omitempty" form:"price"`
+	// 總價
+	Total *int64 `json:"total,omitempty" form:"total"`
 }
 
 // Fields is the searched structure file (including pagination)
@@ -99,7 +129,7 @@ type Fields struct {
 type List struct {
 	Request_itemlists []*struct {
 		// 請購產品列表編號
-		RequestItemListID string `json:"request_itemlist_id,omitempty"`
+		RequestItemListID string `json:"ri_id,omitempty"`
 		// 請購單編號
 		RequestID string `json:"request_id,omitempty"`
 		// 品名
@@ -108,6 +138,12 @@ type List struct {
 		Application string `json:"application,omitempty"`
 		// 請購數量
 		Quanity int64 `json:"quanity,omitempty"`
+		// 產品單位(規格)
+		Unit string `json:"unit,omitempty"`
+		// 單價
+		Price int64 `json:"price,omitempty"`
+		// 總價
+		Total int64 `json:"total,omitempty"`
 		// 創建者
 		CreatedBy string `json:"created_by,omitempty"`
 		// 創建時間
@@ -119,15 +155,21 @@ type List struct {
 // Updated struct is used to update
 type Updated struct {
 	// 請購產品列表編號
-	RequestItemListID string `json:"request_itemlist_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
+	RequestItemListID string `json:"ri_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 請購單編號
-	RequestID *string `json:"request_id,omitempty" binding:"omitempty,uuid4"`
+	RequestID string `json:"request_id,omitempty" binding:"omitempty,uuid4"`
 	// 品名
-	Name *string `json:"name,omitempty"`
+	Name string `json:"name,omitempty"`
 	// 用途
 	Application string `json:"application,omitempty"`
 	// 請購數量
 	Quanity int64 `json:"quanity,omitempty"`
+	// 產品單位(規格)
+	Unit string `json:"unit,omitempty"`
+	// 單價
+	Price int64 `json:"price,omitempty"`
+	// 總價
+	Total int64 `json:"total,omitempty"`
 }
 
 // TableName sets the insert table name for this struct type

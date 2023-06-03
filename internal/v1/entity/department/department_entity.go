@@ -21,7 +21,7 @@ func (e *entity) List(input *model.Fields) (amount int64, output []*model.Table,
 }
 
 func (e *entity) GetByID(input *model.Field) (output *model.Table, err error) {
-	db := e.db.Model(&model.Table{}).Where("department_id = ?", input.DepartmentID)
+	db := e.db.Model(&model.Table{}).Where("d_id = ?", input.DepartmentID)
 
 	err = db.First(&output).Error
 

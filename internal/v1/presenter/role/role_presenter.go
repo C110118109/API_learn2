@@ -5,7 +5,7 @@ import (
 
 	"eirc.app/internal/pkg/code"
 	"eirc.app/internal/pkg/log"
-	"eirc.app/internal/pkg/util"
+	//"eirc.app/internal/pkg/util"
 	preset "eirc.app/internal/v1/presenter"
 	"eirc.app/internal/v1/structure/roles"
 	"github.com/gin-gonic/gin"
@@ -15,9 +15,9 @@ import (
 func (p *presenter) Created(ctx *gin.Context) {
 	// Todo 將UUID改成登入的使用者
 	trx := ctx.MustGet("db_trx").(*gorm.DB)
-	createBy := util.GenerateUUID()
+	//createBy := util.GenerateUUID()
 	input := &roles.Created{}
-	input.CreatedBy = createBy
+	//input.CreatedBy = createBy
 	if err := ctx.ShouldBindJSON(input); err != nil {
 		log.Error(err)
 		ctx.JSON(http.StatusOK, code.GetCodeMessage(code.FormatError, err.Error()))

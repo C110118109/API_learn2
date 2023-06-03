@@ -9,11 +9,9 @@ import (
 // Table struct is database table struct
 type Table struct {
 	// 角色UUID
-	RoleID string `gorm:"primaryKey;column:role_id;uuid_generate_v4()type:UUID;" json:"role_id,omitempty"`
+	RoleID string `gorm:"primaryKey;column:r_id;uuid_generate_v4()type:UUID;" json:"r_id,omitempty"`
 	// 角色名稱
 	Name string `gorm:"column:name;type:TEXT;" json:"name,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `gorm:"column:created_time;type:TIMESTAMP;" json:"created_time"`
 }
@@ -21,11 +19,9 @@ type Table struct {
 // Base struct is corresponding to table structure file
 type Base struct {
 	// 編號
-	RoleID string `json:"role_id,omitempty"`
+	RoleID string `json:"r_id,omitempty"`
 	// 角色名稱
 	Name string `json:"name"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -33,11 +29,9 @@ type Base struct {
 // Single return structure file
 type Single struct {
 	// 編號
-	RoleID string `json:"role_id,omitempty"`
+	RoleID string `json:"r_id,omitempty"`
 	// 角色名稱
 	Name string `json:"name,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -46,18 +40,14 @@ type Single struct {
 type Created struct {
 	// 角色名稱
 	Name string `json:"name,omitempty" binding:"required" validate:"required"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty" swaggerignore:"true"`
 }
 
 // Field is structure file for search
 type Field struct {
 	// 編號
-	RoleID string `json:"role_id,omitempty" binding:"omitempty" swaggerignore:"true"`
+	RoleID string `json:"r_id,omitempty" binding:"omitempty" swaggerignore:"true"`
 	// 角色名稱
 	Name *string `json:"name,omitempty" form:"name"`
-	// 請購日期
-	RequestDate *time.Time `json:"request_date,omitempty" form:"request_date"`
 }
 
 // Fields is the searched structure file (including pagination)
@@ -70,11 +60,9 @@ type Fields struct {
 type List struct {
 	Roles []*struct {
 		// 編號
-		RoleID string `json:"role_id,omitempty"`
+		RoleID string `json:"r_id,omitempty"`
 		// 角色名稱
 		Name string `json:"name,omitempty"`
-		// 創建者
-		CreatedBy string `json:"created_by,omitempty"`
 		// 創建時間
 		CreatedTime time.Time `json:"created_time"`
 	} `json:"roles"`
@@ -84,7 +72,7 @@ type List struct {
 // Updated struct is used to update
 type Updated struct {
 	// 編號
-	RoleID string `json:"role_id,omitempty" binding:"omitempty" swaggerignore:"true"`
+	RoleID string `json:"r_id,omitempty" binding:"omitempty" swaggerignore:"true"`
 	// 角色名稱
 	Name *string `json:"name,omitempty"`
 }

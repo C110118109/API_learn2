@@ -2,7 +2,7 @@ create function add_department_code()
 returns text as
 $$
 declare
-    old_id text :=(select  department_code  from departments order by department_code desc limit 1);
+    old_id text :=(select  d_code  from departments order by d_code desc limit 1);
     id_number varchar(3) :='001';
     -- datetime char(4) :=substring(cast(now() as varchar),1,4);
     new_id text ;

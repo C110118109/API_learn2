@@ -1,7 +1,9 @@
 package request
 
 import (
+	"eirc.app/internal/pkg/log"
 	model "eirc.app/internal/v1/structure/requests"
+	"gorm.io/gorm/clause"
 )
 
 func (e *entity) Created(input *model.Table) (err error) {
@@ -12,29 +14,30 @@ func (e *entity) Created(input *model.Table) (err error) {
 
 func (e *entity) List(input *model.Fields) (amount int64, output []*model.Table, err error) {
 	db := e.db.Model(&model.Table{})
-	if input.RequestItemListID != nil {
-		db.Where("request_itemlist_id = ?", input.RequestItemListID)
-	}
-	if input.EmployeeID != nil {
-		db.Where("employee_id = ?", input.EmployeeID)
-	}
 
 	err = db.Count(&amount).Offset(int((input.Page - 1) * input.Limit)).
 		Limit(int(input.Limit)).Order("created_time desc").Find(&output).Error
 
-	// if input.Price != nil {
-	// 	db.Where("price = ?", input.Price)
-	// }
-
-	// if input.Quanity != nil {
-	// 	db.Where("name like %?%", *input.Quanity)
-	// }
-
 	return amount, output, err
 }
 
+func (e *entity) GetBySingle(input *model.Base) (output *model.Table, err error) {
+	db := e.db.Model(&model.Table{}).Preload(clause.Associations)
+	if input.RequestID != "" {
+		db.Where("r_id = ?", input.RequestID)
+	}
+
+	err = db.First(&output).Error
+	if err != nil {
+		log.Error(err)
+		return nil, err
+	}
+
+	return output, nil
+}
+
 func (e *entity) GetByID(input *model.Field) (output *model.Table, err error) {
-	db := e.db.Model(&model.Table{}).Where("request_id = ?", input.RequestID)
+	db := e.db.Model(&model.Table{}).Where("r_id = ?", input.RequestID)
 
 	err = db.First(&output).Error
 

@@ -10,15 +10,13 @@ import (
 // Table struct is database table struct
 type Table struct {
 	// 產品編號
-	ItemID string `gorm:"primaryKey;uuid_generate_v4();column:item_id;type:UUID;" json:"item_id,omitempty"`
+	ItemID string `gorm:"primaryKey;uuid_generate_v4();column:i_id;type:UUID;" json:"i_id,omitempty"`
 	// 產品名稱
 	Name string `gorm:"column:name;type:TEXT;" json:"name,omitempty"`
 	// 產品單位
 	Unit string `gorm:"column:unit;type:TEXT;" json:"unit,omitempty"`
 	// 產品價格
 	Price int64 `gorm:"column:price;type:INT4;" json:"price,omitempty"`
-	// 創建者
-	CreatedBy string `gorm:"column:created_by;type:UUID;" json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `gorm:"column:created_time;type:TIMESTAMP;" json:"created_time"`
 }
@@ -26,15 +24,13 @@ type Table struct {
 // Base struct is corresponding to table structure file
 type Base struct {
 	// 產品編號
-	ItemID string `json:"item_id,omitempty"`
+	ItemID string `json:"i_id,omitempty"`
 	// 產品名稱
 	Name string `json:"name,omitempty"`
 	// 產品單位
 	Unit string `json:"unit,omitempty"`
 	// 產品價格
 	Price int64 `json:"price,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -42,15 +38,13 @@ type Base struct {
 // Single return structure file
 type Single struct {
 	// 產品編號
-	ItemID string `json:"item_id,omitempty"`
+	ItemID string `json:"i_id,omitempty"`
 	// 產品名稱
 	Name string `json:"name,omitempty"`
 	// 產品單位
 	Unit string `json:"unit,omitempty"`
 	// 產品價格
 	Price int64 `json:"price,omitempty"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty"`
 	// 創建時間
 	CreatedTime time.Time `json:"created_time"`
 }
@@ -63,14 +57,12 @@ type Created struct {
 	Unit string `json:"unit,omitempty" binding:"required" validate:"required"`
 	// 產品價格
 	Price int64 `json:"price,omitempty" binding:"required" validate:"required"`
-	// 創建者
-	CreatedBy string `json:"created_by,omitempty" swaggerignore:"true"`
 }
 
 // Updated struct is used to update
 type Updated struct {
 	// 產品編號
-	ItemID string `json:"item_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
+	ItemID string `json:"i_id,omitempty" binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 產品名稱
 	Name string `json:"name,omitempty"`
 	// 產品單位
@@ -82,7 +74,7 @@ type Updated struct {
 // Field is structure file for search
 type Field struct {
 	// 產品編號
-	ItemID string `json:"item_id,omitempty"  binding:"omitempty,uuid4" swaggerignore:"true"`
+	ItemID string `json:"i_id,omitempty"  binding:"omitempty,uuid4" swaggerignore:"true"`
 	// 產品名稱
 	Name *string `json:"name,omitempty" form:"name"`
 	// 產品單位
@@ -101,15 +93,13 @@ type Fields struct {
 type List struct {
 	Items []*struct {
 		// 產品編號
-		ItemID string `json:"item_id,omitempty"`
+		ItemID string `json:"i_id,omitempty"`
 		// 產品名稱
 		Name string `json:"name,omitempty"`
 		// 產品單位
 		Unit string `json:"unit,omitempty"`
 		// 產品價格
 		Price int64 `json:"price,omitempty"`
-		// 創建者
-		CreatedBy string `json:"created_by,omitempty"`
 		// 創建時間
 		CreatedTime time.Time `json:"created_time"`
 	} `json:"equipments"`

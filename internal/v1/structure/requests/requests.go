@@ -12,7 +12,7 @@ type Table struct {
 	// 編號UUID
 	RequestID string `gorm:"primaryKey;column:re_id;uuid_generate_v4()type:UUID;" json:"re_id,omitempty"`
 	//申請人
-	ApplicantID string `gorm:"column:applicant;type:UUID;" json:"applicant,omitempty"`
+	ApplicantID string `gorm:"column:applicant_id;type:UUID;" json:"applicant_id,omitempty"`
 	//applicant data
 	Employees employees.Table `gorm:"foreignKey:ApplicantID;references:ApplicantID" json:"employees,omitempty"`
 	// 請購產品列表ID
@@ -20,7 +20,7 @@ type Table struct {
 	// 請購是由
 	Reason string `gorm:"column:reason;type:TEXT;" json:"reason,omitempty"`
 	// 請購日期
-	RequestDate time.Time `gorm:"column:request_date;type:TIMESTAMP;" json:"request_date"`
+	RequestDate time.Time `gorm:"column:request_date;type:DATE;" json:"request_date"`
 	// 創建者
 	CreatedBy string `gorm:"column:created_by;type:UUID;" json:"created_by,omitempty"`
 	// 創建時間
@@ -32,7 +32,7 @@ type Base struct {
 	// 編號
 	RequestID string `json:"re_id,omitempty"`
 	// 申請人
-	ApplicantID string `json:"applicant,omitempty"`
+	ApplicantID string `json:"applicant_id,omitempty"`
 	//applicant data
 	Employees employees.Base `json:"employees,omitempty"`
 	// 請購產品列表ID
@@ -52,7 +52,7 @@ type Single struct {
 	// 編號
 	RequestID string `json:"re_id,omitempty"`
 	// 申請人
-	ApplicantID string `json:"applicant,omitempty"`
+	ApplicantID string `json:"applicant_id,omitempty"`
 	// 申請人姓名
 	ApplicantName string `json:"applicant_name,omitempty"`
 	// 請購產品列表ID
@@ -70,7 +70,7 @@ type Single struct {
 // Created struct is used to create
 type Created struct {
 	// 申請人
-	ApplicantID string `json:"applicant" binding:"required" validate:"required"`
+	ApplicantID string `json:"applicant_id" binding:"required" validate:"required"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id" binding:"required,uuid4" validate:"required"`
 	// 請購是由
@@ -86,7 +86,7 @@ type Field struct {
 	// 編號
 	RequestID string `json:"re_id,omitempty" binding:"omitempty" swaggerignore:"true"`
 	// 申請人
-	ApplicantID string `json:"applicant,omitempty" form:"applicant" binding:"omitempty,uuid4"`
+	ApplicantID string `json:"applicant_id,omitempty" form:"applicant_id" binding:"omitempty,uuid4"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id,omitempty" form:"request_itemlist_id" binding:"omitempty,uuid4"`
 	// 請購是由
@@ -107,7 +107,7 @@ type List struct {
 		// 編號
 		RequestID string `json:"re_id,omitempty"`
 		// 申請人
-		ApplicantID string `json:"applicant,omitempty"`
+		ApplicantID string `json:"applicant_id,omitempty"`
 		// 請購產品列表ID
 		RequestItemListID string `json:"request_itemlist_id,omitempty"`
 		// 請購是由
@@ -127,7 +127,7 @@ type Updated struct {
 	// 編號
 	RequestID string `json:"re_id,omitempty" binding:"omitempty" swaggerignore:"true"`
 	// 申請人
-	ApplicantID string `json:"applicant,omitempty" binding:"omitempty,uuid4"`
+	ApplicantID string `json:"applicant_id,omitempty" binding:"omitempty,uuid4"`
 	// 請購產品列表ID
 	RequestItemListID string `json:"request_itemlist_id,omitempty" binding:"omitempty,uuid4"`
 	// 請購是由

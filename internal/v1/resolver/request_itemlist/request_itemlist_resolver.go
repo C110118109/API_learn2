@@ -8,22 +8,14 @@ import (
 	"eirc.app/internal/pkg/log"
 	"eirc.app/internal/pkg/util"
 	requesitemlistModel "eirc.app/internal/v1/structure/request_itemlists"
-	requestModel "eirc.app/internal/v1/structure/requests"
+
+	//requestModel "eirc.app/internal/v1/structure/requests"
 	"gorm.io/gorm"
 )
 
 func (r *resolver) Created(trx *gorm.DB, input *requesitemlistModel.Created) interface{} {
 	defer trx.Rollback()
 	// Todo 角色名稱
-	_, err := r.RequestService.WithTrx(trx).GetByID(&requestModel.Field{RequestID: input.RequestID})
-	if err != nil {
-		if errors.Is(err, gorm.ErrRecordNotFound) {
-			return code.GetCodeMessage(code.DoesNotExist, err)
-		}
-
-		log.Error(err)
-		return code.GetCodeMessage(code.InternalServerError, err.Error())
-	}
 
 	request_itemlist, err := r.RequestItemListService.WithTrx(trx).Created(input)
 	if err != nil {
@@ -55,6 +47,32 @@ func (r *resolver) List(input *requesitemlistModel.Fields) interface{} {
 	}
 
 	return code.GetCodeMessage(code.Successful, output)
+}
+
+func (r *resolver) GetBySingle(input *requesitemlistModel.Base) interface{} {
+	requesitemlist, err := r.RequestItemListService.GetBySingle(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requesitemlistModel.Single{}
+	requesitemlistByte, _ := json.Marshal(requesitemlist)
+	err = json.Unmarshal(requesitemlistByte, &output)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output.ItemName = requesitemlist.Items.Name
+	output.ItemUnit = requesitemlist.Items.Unit
+	output.ItemPrice = requesitemlist.Items.Price
+	return code.GetCodeMessage(code.Successful, output)
+
 }
 
 func (r *resolver) GetByID(input *requesitemlistModel.Field) interface{} {

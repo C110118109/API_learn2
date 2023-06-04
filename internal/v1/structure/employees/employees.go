@@ -18,7 +18,7 @@ type Table struct {
 	// 部門編號
 	DepartmentID string `gorm:"column:department_id;type:uuid;" json:"department_id,omitempty"`
 	// department data
-	Departments departments.Table `gorm:"foreignKey:DepartmentID;references:DepartmentID" json:"deprtments,omitempty"`
+	Departments departments.Table `gorm:"foreignKey:DepartmentID;references:DepartmentID" json:"departments,omitempty"`
 	// 角色編號
 	RoleID string `gorm:"column:role_id;type:uuid;" json:"role_id,omitempty"`
 	// role data

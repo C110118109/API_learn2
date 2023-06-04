@@ -13,9 +13,10 @@ func GetRoute(route *gin.Engine, db *gorm.DB) *gin.Engine {
 	{
 		v10.POST("", middleware.Transaction(db), controller.Created)
 		v10.GET("", controller.List)
-		v10.GET(":request_itemlistID", controller.GetByID)
-		v10.DELETE(":request_itemlistID", controller.Delete)
-		v10.PATCH(":request_itemlistID", controller.Updated)
+		v10.GET(":requestitemlistID", controller.GetByID)
+		v10.GET("/GetBysingle/:requestitemlistID", controller.GetBySingle)
+		v10.DELETE(":requestitemlistID", controller.Delete)
+		v10.PATCH(":requestitemlistID", controller.Updated)
 	}
 
 	return route

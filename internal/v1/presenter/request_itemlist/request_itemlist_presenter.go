@@ -46,6 +46,21 @@ func (p *presenter) List(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, codeMessage)
 }
 
+func (p *presenter) GetBySingle(ctx *gin.Context) {
+	requestitemlistID := ctx.Param("requestitemlistID")
+	input := &request_itemlists.Base{}
+	input.RequestItemListID = requestitemlistID
+	if err := ctx.ShouldBindQuery(input); err != nil {
+		log.Error(err)
+		ctx.JSON(http.StatusOK, code.GetCodeMessage(code.FormatError, err.Error()))
+
+		return
+	}
+
+	codeMessage := p.RequestItemListResolver.GetBySingle(input)
+	ctx.JSON(http.StatusOK, codeMessage)
+}
+
 func (p *presenter) GetByID(ctx *gin.Context) {
 	requestitemlistID := ctx.Param("requestitemlistID")
 	input := &request_itemlists.Field{}

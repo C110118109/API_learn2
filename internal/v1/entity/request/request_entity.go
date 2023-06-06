@@ -24,7 +24,7 @@ func (e *entity) List(input *model.Fields) (amount int64, output []*model.Table,
 func (e *entity) GetBySingle(input *model.Base) (output *model.Table, err error) {
 	db := e.db.Model(&model.Table{}).Preload(clause.Associations)
 	if input.RequestID != "" {
-		db.Where("r_id = ?", input.RequestID)
+		db.Where("re_id = ?", input.RequestID)
 	}
 
 	err = db.First(&output).Error
@@ -37,7 +37,7 @@ func (e *entity) GetBySingle(input *model.Base) (output *model.Table, err error)
 }
 
 func (e *entity) GetByID(input *model.Field) (output *model.Table, err error) {
-	db := e.db.Model(&model.Table{}).Where("r_id = ?", input.RequestID)
+	db := e.db.Model(&model.Table{}).Where("re_id = ?", input.RequestID)
 
 	err = db.First(&output).Error
 

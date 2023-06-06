@@ -4,7 +4,7 @@ CREATE TABLE IF NOT EXISTS request_itemlists
 (
     ri_id uuid default uuid_generate_v4() not null primary key,
     item_id uuid not null,
-    --request_id uuid not null,
+    request_id uuid not null,
     --name text not null,
     application text not null,
     quanity integer not null,

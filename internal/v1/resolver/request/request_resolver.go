@@ -10,7 +10,10 @@ import (
 
 	//employeeModel "eirc.app/internal/v1/structure/employees"
 	//"eirc.app/internal/v1/entity/employee"
+
+	//"eirc.app/internal/v1/entity/item"
 	requestModel "eirc.app/internal/v1/structure/requests"
+
 	//requesitemlistModel "eirc.app/internal/v1/structure/request_itemlists"
 	"gorm.io/gorm"
 )
@@ -63,6 +66,7 @@ func (r *resolver) GetBySingle(input *requestModel.Base) interface{} {
 	}
 
 	output := &requestModel.Single{}
+
 	requestByte, _ := json.Marshal(request)
 	err = json.Unmarshal(requestByte, &output)
 	if err != nil {
@@ -72,13 +76,13 @@ func (r *resolver) GetBySingle(input *requestModel.Base) interface{} {
 
 	output.ApplicantName = request.Employees.Name
 
-	// if applicantBase,err:= r.RequestService.GetBySingle(&requestModel.Field{
-	// 	RequestID: *&requestBase.ApplicantID,
-	// });err != nil{
-	// 	output.ApplicantName=""
-	// }else{
-	// 	output.ApplicantName=*applicantBase.Name
-	// }
+	// output.RequestItemListQuanity = request.Detail.Quanity
+	// output.RequestItemListTotal = request.Detail.Total
+	// output.RequestItemListApplication = request.Detail.Application
+
+	// output.RequestItemListName = request.Detail.Items.Name
+	// output.RequestItemListUnit = request.Detail.Items.Unit
+	// output.RequestItemListPrice = request.Detail.Items.Price
 
 	return code.GetCodeMessage(code.Successful, output)
 

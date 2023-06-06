@@ -12,7 +12,9 @@ import (
 // Table struct is database table struct
 type Table struct {
 	// 請購產品列表編號
-	RequestItemListID string `gorm:"primaryKey;uuid_generate_v4();column:ri_id;type:uuid;" json:"ri_id,omitempty"`
+	RequestItemListID string `gorm:"<-:create;primaryKey;uuid_generate_v4();column:ri_id;type:uuid;" json:"ri_id,omitempty"`
+	//
+	RequestID string `gorm:"<-:create;column:request_id;type:UUID;not null;" json:"request_id,omitempty"`
 	// 產品列表編號
 	ItemID string `gorm:"column:item_id;type:uuid;" json:"item_id,omitempty"`
 	//item data
@@ -41,6 +43,8 @@ type Table struct {
 type Base struct {
 	// 請購產品列表編號
 	RequestItemListID string `json:"ri_id,omitempty"`
+	//
+	RequestID string `json:"request_id,omitempty"`
 	// 產品列表編號
 	ItemID string `json:"item_id,omitempty"`
 	// item data
@@ -69,6 +73,8 @@ type Base struct {
 type Single struct {
 	// 請購產品列表編號
 	RequestItemListID string `json:"ri_id,omitempty"`
+	//
+	RequestID string `json:"request_id,omitempty"`
 	// 請購單編號
 	//RequestID string `json:"request_id,omitempty"`
 	// 用途
@@ -95,6 +101,8 @@ type Single struct {
 
 // Created struct is used to create
 type Created struct {
+	//
+	RequestID string `json:"request_id,omitempty" binding:"required,uuid4" validate:"required"`
 	// 品名
 	//Name string `json:"name" binding:"required" validate:"required"`
 	// 請購單編號
@@ -148,6 +156,8 @@ type List struct {
 	Request_itemlists []*struct {
 		// 請購產品列表編號
 		RequestItemListID string `json:"ri_id,omitempty"`
+		//
+		RequestID string `json:"request_id,omitempty"`
 		// 請購單編號
 		//RequestID string `json:"request_id,omitempty"`
 		// 產品列表編號

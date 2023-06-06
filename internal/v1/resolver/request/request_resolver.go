@@ -150,3 +150,52 @@ func (r *resolver) Updated(input *requestModel.Updated) interface{} {
 
 	return code.GetCodeMessage(code.Successful, request.RequestID)
 }
+
+func (r *resolver) RequestDetailListUser(input *requestModel.Fields) interface{} {
+	quantity, request, err := r.RequestService.RequestDetailListUser(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requestModel.AllRequestDetail{}
+	output.Limit = input.Limit
+	output.Page = input.Page
+	output.Total = quantity
+	output.Pages = util.Pagination(quantity, output.Limit)
+
+	requestByte, _ := json.Marshal(request)
+	err = json.Unmarshal(requestByte, &output.Request)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	return code.GetCodeMessage(code.Successful, output)
+}
+
+func (r *resolver) GetByReIDRequestDetailListUser(input *requestModel.Field) interface{} {
+	request, err := r.RequestService.GetByReIDRequestDetailListUser(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requestModel.RequestDetail{}
+	requestByte, _ := json.Marshal(request)
+	err = json.Unmarshal(requestByte, &output)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	return code.GetCodeMessage(code.Successful, output)
+}

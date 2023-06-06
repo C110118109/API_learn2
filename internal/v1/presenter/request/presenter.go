@@ -11,6 +11,8 @@ type Presenter interface {
 	List(ctx *gin.Context)
 	GetByID(ctx *gin.Context)
 	GetBySingle(ctx *gin.Context)
+	GetByReIDRequestDetailListUser(ctx *gin.Context)
+	RequestDetailListUser(ctx *gin.Context)
 	Delete(ctx *gin.Context)
 	Updated(ctx *gin.Context)
 }

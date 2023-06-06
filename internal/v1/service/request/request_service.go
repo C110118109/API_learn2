@@ -165,3 +165,53 @@ func (s *service) Updated(input *model.Updated) (err error) {
 
 	return err
 }
+
+func (s *service) RequestDetailListUser(input *model.Fields) (quantity int64, output []*model.Base, err error) {
+	amount, fields, err := s.Entity.RequestDetailListUser(input)
+	if err != nil {
+		log.Error(err)
+
+		return 0, output, err
+	}
+
+	marshal, err := json.Marshal(fields)
+	if err != nil {
+		log.Error(err)
+
+		return 0, output, err
+	}
+
+	err = json.Unmarshal(marshal, &output)
+	if err != nil {
+		log.Error(err)
+
+		return 0, output, err
+	}
+
+	return amount, output, err
+}
+
+func (s *service) GetByReIDRequestDetailListUser(input *model.Field) (output *model.Base, err error) {
+	field, err := s.Entity.GetByReIDRequestDetailListUser(input)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	marshal, err := json.Marshal(field)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	err = json.Unmarshal(marshal, &output)
+	if err != nil {
+		log.Error(err)
+
+		return nil, err
+	}
+
+	return output, nil
+}

@@ -5,6 +5,8 @@ import (
 
 	model "eirc.app/internal/v1/structure"
 	"eirc.app/internal/v1/structure/employees"
+
+	// "eirc.app/internal/v1/structure/items"
 	"eirc.app/internal/v1/structure/request_itemlists"
 )
 
@@ -13,7 +15,7 @@ type Table struct {
 	// 編號UUID
 	RequestID string `gorm:"<-:create;primaryKey;column:re_id;uuid_generate_v4()type:UUID;" json:"re_id,omitempty"`
 
-	//Detail []request_itemlists.Table `gorm:"foreignkey:request_id;references:re_id" json:"detail"`
+	//ItemLists request_itemlists.Table `gorm:"foreignkey:RequestID;references:re_id" json:"itemlists"`
 	//申請人
 	ApplicantID string `gorm:"column:applicant_id;type:UUID;" json:"applicant_id,omitempty"`
 	//applicant data
@@ -21,7 +23,8 @@ type Table struct {
 	// 請購產品列表ID
 	//RequestItemListID string `gorm:"column:request_itemlist_id;type:UUID;" json:"request_itemlist_id,omitempty"`
 	//request_itemlist data
-	Detail []request_itemlists.Table `gorm:"foreignKey:request_id;references:re_id" json:"detail"`
+	Detail     []request_itemlists.Table `gorm:"foreignKey:request_id;references:re_id" json:"detail"`
+	ItemDetail []request_itemlists.Table `gorm:"foreignKey:item_id;references:re_id" json:"itemdetail"`
 	// 請購是由
 	Reason string `gorm:"column:reason;type:TEXT;" json:"reason,omitempty"`
 	// 請購日期
@@ -44,8 +47,8 @@ type Base struct {
 	Employees employees.Base `json:"employees,omitempty"`
 	// 請購產品列表ID
 	// RequestItemListID string `json:"request_itemlist_id,omitempty"`
-	//request_itemlist data
-	// RequestItemLists request_itemlists.Base `json:"requestitemlists,omitempty"`
+	// request_itemlist data
+	//ItemLists request_itemlists.Base `json:"itemlists,omitempty"`
 	// 請購是由
 	Reason string `json:"reason,omitempty"`
 	// 請購日期
@@ -56,16 +59,17 @@ type Base struct {
 	CreatedTime time.Time `json:"created_time"`
 }
 
-// type RequestDetail struct {
-// 	Single
-// 	Detail []request_itemlists.Base `json:"detail,omitempty"`
-// 	// gorm:"foreignkey:request_id;references:re_id"
-// }
+type RequestDetail struct {
+	Single
+	Detail []request_itemlists.Base `json:"detail,omitempty"`
+	// gorm:"foreignkey:request_id;references:re_id"
 
-// type AllRequestDetail struct {
-// 	Request []*RequestDetail `json:"requests"`
-// 	model.OutPage
-// }
+}
+
+type AllRequestDetail struct {
+	Request []*RequestDetail `json:"requests"`
+	model.OutPage
+}
 
 // Single return structure file
 type Single struct {
@@ -78,17 +82,17 @@ type Single struct {
 	// 請購產品列表ID
 	//RequestItemListID string `json:"request_itemlist_id,omitempty"`
 	// *用途
-	RequestItemListApplication string `json:"ri_application,omitempty"`
+	//RequestItemListApplication string `json:"ri_application,omitempty"`
 	// **產品名稱
-	RequestItemListName string `json:"ri_name,omitempty"`
+	//RequestItemListName string `json:"ri_name,omitempty"`
 	// **產品單位(規格)
-	RequestItemListUnit string `json:"ri_unit,omitempty"`
+	//RequestItemListUnit string `json:"ri_unit,omitempty"`
 	// *請購數量
-	RequestItemListQuanity int64 `json:"ri_quanity,omitempty"`
+	//RequestItemListQuanity int64 `json:"ri_quanity,omitempty"`
 	// **產品單價
-	RequestItemListPrice int64 `json:"ri_price,omitempty"`
+	//RequestItemListPrice int64 `json:"ri_price,omitempty"`
 	// *總價
-	RequestItemListTotal int64 `json:"ri_total,omitempty"`
+	//RequestItemListTotal int64 `json:"ri_total,omitempty"`
 	// 請購是由
 	Reason string `json:"reason,omitempty"`
 	// 請購日期

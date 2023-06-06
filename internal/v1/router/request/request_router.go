@@ -15,6 +15,8 @@ func GetRoute(route *gin.Engine, db *gorm.DB) *gin.Engine {
 		v10.GET("", controller.List)
 		v10.GET(":requestID", controller.GetByID)
 		v10.GET("/GetBysingle/:requestID", controller.GetBySingle)
+		v10.GET("/GetByReIDDetail/:requestID", controller.GetByReIDRequestDetailListUser)
+		v10.GET("/GetAllRequestDetail", controller.RequestDetailListUser)
 		v10.DELETE(":requestID", controller.Delete)
 		v10.PATCH(":requestID", controller.Updated)
 	}

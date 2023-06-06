@@ -55,3 +55,21 @@ func (e *entity) Updated(input *model.Table) (err error) {
 
 	return err
 }
+
+func (e *entity) RequestDetailListUser(input *model.Fields) (amount int64, output []*model.Table, err error) {
+	db := e.db.Model(&model.Table{})
+
+	err = db.Count(&amount).Preload("Detail").
+		Order("requests.created_time desc").
+		Offset(int((input.Page - 1) * input.Limit)).Limit(int(input.Limit)).Find(&output).Error
+
+	return amount, output, err
+}
+
+func (e *entity) GetByReIDRequestDetailListUser(input *model.Field) (output *model.Table, err error) {
+	db := e.db.Model(&model.Table{})
+
+	err = db.Where("re_id = ?", input.RequestID).First(&output).Error
+
+	return output, err
+}

@@ -14,11 +14,13 @@ type Table struct {
 	// 請購產品列表編號
 	RequestItemListID string `gorm:"<-:create;primaryKey;uuid_generate_v4();column:ri_id;type:uuid;" json:"ri_id,omitempty"`
 	//
+	Detail []items.Table `gorm:"foreignKey:i_id;references:ri_id" json:"detail"`
+	//
 	RequestID string `gorm:"<-:create;column:request_id;type:UUID;not null;" json:"request_id,omitempty"`
 	// 產品列表編號
 	ItemID string `gorm:"column:item_id;type:uuid;" json:"item_id,omitempty"`
 	//item data
-	Items items.Table `gorm:"foreignKey:ItemID;references:ItemID" json:"items,omitempty"`
+	Items []items.Table `gorm:"foreignKey:ItemID;references:ItemID" json:"items,omitempty"`
 	// 請購單編號
 	//RequestID string `gorm:"column:request_id;type:uuid;" json:"request_id,omitempty"`
 	// 品名
@@ -43,12 +45,14 @@ type Table struct {
 type Base struct {
 	// 請購產品列表編號
 	RequestItemListID string `json:"ri_id,omitempty"`
+
+	Detail []items.Base `json:"detail"`
 	//
 	RequestID string `json:"request_id,omitempty"`
 	// 產品列表編號
 	ItemID string `json:"item_id,omitempty"`
 	// item data
-	Items items.Base `json:"items,omitempty"`
+	Items []items.Base `json:"items,omitempty"`
 	// 品名
 	//Name string `json:"name,omitempty"`
 	// 請購單編號
@@ -207,4 +211,16 @@ type Updated struct {
 // TableName sets the insert table name for this struct type
 func (a *Table) TableName() string {
 	return "request_itemlists"
+}
+
+type ItemDetail struct {
+	Single
+	Detail []items.Base `json:"detail,omitempty"`
+	// gorm:"foreignkey:request_id;references:re_id"
+
+}
+
+type AllItemDetail struct {
+	Item []*ItemDetail `json:"item"`
+	model.OutPage
 }

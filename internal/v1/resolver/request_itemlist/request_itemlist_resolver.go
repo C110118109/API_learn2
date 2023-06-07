@@ -68,9 +68,9 @@ func (r *resolver) GetBySingle(input *requesitemlistModel.Base) interface{} {
 		return code.GetCodeMessage(code.InternalServerError, err)
 	}
 
-	output.ItemName = requesitemlist.Items.Name
-	output.ItemUnit = requesitemlist.Items.Unit
-	output.ItemPrice = requesitemlist.Items.Price
+	//output.ItemName = requesitemlist.Items.Name
+	//output.ItemUnit = requesitemlist.Items.Unit
+	//output.ItemPrice = requesitemlist.Items.Price
 	return code.GetCodeMessage(code.Successful, output)
 
 }
@@ -136,4 +136,53 @@ func (r *resolver) Updated(input *requesitemlistModel.Updated) interface{} {
 	}
 
 	return code.GetCodeMessage(code.Successful, request_itemlist.RequestItemListID)
+}
+
+func (r *resolver) ItemDetailUser(input *requesitemlistModel.Fields) interface{} {
+	quantity, request_itemlist, err := r.RequestItemListService.ItemDetailUser(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requesitemlistModel.AllItemDetail{}
+	output.Limit = input.Limit
+	output.Page = input.Page
+	output.Total = quantity
+	output.Pages = util.Pagination(quantity, output.Limit)
+
+	request_itemlistByte, _ := json.Marshal(request_itemlist)
+	err = json.Unmarshal(request_itemlistByte, &output.Item)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	return code.GetCodeMessage(code.Successful, output)
+}
+
+func (r *resolver) GetByIIDItemDetailUser(input *requesitemlistModel.Field) interface{} {
+	request_itemlist, err := r.RequestItemListService.GetByIIDItemDetailUser(input)
+	if err != nil {
+		if errors.Is(err, gorm.ErrRecordNotFound) {
+			return code.GetCodeMessage(code.DoesNotExist, err)
+		}
+
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	output := &requesitemlistModel.ItemDetail{}
+	request_itemlistByte, _ := json.Marshal(request_itemlist)
+	err = json.Unmarshal(request_itemlistByte, &output)
+	if err != nil {
+		log.Error(err)
+		return code.GetCodeMessage(code.InternalServerError, err)
+	}
+
+	return code.GetCodeMessage(code.Successful, output)
 }

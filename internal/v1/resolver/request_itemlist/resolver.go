@@ -15,6 +15,8 @@ type Resolver interface {
 	List(input *model.Fields) interface{}
 	GetByID(input *model.Field) interface{}
 	GetBySingle(input *model.Base) interface{}
+	GetByIIDItemDetailUser(input *model.Field) interface{}
+	ItemDetailUser(input *model.Fields) interface{}
 	Deleted(input *model.Updated) interface{}
 	Updated(input *model.Updated) interface{}
 }

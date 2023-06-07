@@ -23,8 +23,8 @@ type Table struct {
 	// 請購產品列表ID
 	//RequestItemListID string `gorm:"column:request_itemlist_id;type:UUID;" json:"request_itemlist_id,omitempty"`
 	//request_itemlist data
-	Detail     []request_itemlists.Table `gorm:"foreignKey:request_id;references:re_id" json:"detail"`
-	ItemDetail []request_itemlists.Table `gorm:"foreignKey:item_id;references:re_id" json:"itemdetail"`
+	Detail []request_itemlists.Table `gorm:"foreignKey:request_id;references:re_id" json:"detail"`
+	//ItemDetail []request_itemlists.Table `gorm:"foreignKey:item_id;references:re_id" json:"itemdetail"`
 	// 請購是由
 	Reason string `gorm:"column:reason;type:TEXT;" json:"reason,omitempty"`
 	// 請購日期

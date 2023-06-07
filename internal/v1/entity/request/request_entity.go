@@ -59,7 +59,7 @@ func (e *entity) Updated(input *model.Table) (err error) {
 func (e *entity) RequestDetailListUser(input *model.Fields) (amount int64, output []*model.Table, err error) {
 	db := e.db.Model(&model.Table{})
 
-	err = db.Count(&amount).Preload("Detail").
+	err = db.Count(&amount).Preload("Detail.Items").
 		Order("requests.created_time desc").
 		Offset(int((input.Page - 1) * input.Limit)).Limit(int(input.Limit)).Find(&output).Error
 

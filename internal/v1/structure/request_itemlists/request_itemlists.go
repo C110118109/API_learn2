@@ -14,7 +14,7 @@ type Table struct {
 	// 請購產品列表編號
 	RequestItemListID string `gorm:"<-:create;primaryKey;uuid_generate_v4();column:ri_id;type:uuid;" json:"ri_id,omitempty"`
 	//
-	Detail []items.Table `gorm:"foreignKey:i_id;references:ri_id" json:"detail"`
+	//Detail []items.Table `gorm:"foreignKey:i_id;references:ri_id" json:"detail"`
 	//
 	RequestID string `gorm:"<-:create;column:request_id;type:UUID;not null;" json:"request_id,omitempty"`
 	// 產品列表編號
@@ -46,7 +46,7 @@ type Base struct {
 	// 請購產品列表編號
 	RequestItemListID string `json:"ri_id,omitempty"`
 
-	Detail []items.Base `json:"detail"`
+	//Detail []items.Base `json:"detail"`
 	//
 	RequestID string `json:"request_id,omitempty"`
 	// 產品列表編號
